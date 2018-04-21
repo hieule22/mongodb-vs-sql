@@ -11,4 +11,3 @@ mongo test --eval "db.author.remove({})"
 
 echo "Importing data from file to author collection"
 mongoimport --db test --collection author --file data/authors.json
-

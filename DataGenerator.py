@@ -77,6 +77,3 @@ writeFile([author.jsonStr() for author in authors], 'genfiles/authors.json')
 writeFile([paper.csvStr() for paper in papers], 'genfiles/papers.csv')
 writeFile([paper.jsonStr() for paper in papers], 'genfiles/papers.json')
 writeFile(['%s,%s' % authorship for authorship in authorships], 'genfiles/authorships.csv')
-        
-    
-    
