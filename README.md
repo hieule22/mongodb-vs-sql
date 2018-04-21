@@ -3,7 +3,7 @@
 ## About
 
 This project benchmarks search queries for MongoDB and MySQL for data of various
-sizes in the presence -- or lack thereof -- of indexes.
+sizes in the presence - or lack thereof - of indexes.
 
 ## Content
 
@@ -15,16 +15,17 @@ tables are free of any initial index (MySQL automatically defines indexes on
 key fields).
 
 * [`DataGenerator.py`](DataGenerator.py) is the Python script used to generate
-data for authors, papers, and authorships -- the association between an author
+data for authors, papers, and authorships - the association between an author
 and the paper he or she writes. The generated data will be output to CSV and
 JSON files stored in [`genfiles`](genfiles/). Update the values of `NUM_AUTHORS`
 and `NUM_PAPERS` to change the number of rows generated.
 
-* [`genfiles/`](genfiles/) stores the generated data files used to populate our
+* [`genfiles`](genfiles/) stores the generated data files used to populate our
 databases. JSON files are used to populate MongoDB database while CSV files are
-used to populate MySQL databases.
+used to populate MySQL databases. Please keep all generated data files local
+since they could get rapidly large when more rows are inserted.
 
-* [`data/`](data/) contains input files taken from several sources to generate
+* [`data`](data/) contains input files taken from several sources to generate
 test data for this project.
 
 * [`MongoDBDataLoader.sh`](MongoDBDataLoader.sh) is the bash script to import
@@ -40,7 +41,7 @@ our use cases.
 
 ### Requirements
 
-* Linux/MacOS machine
+* Linux/MacOS
 
 * MongoDB
 
@@ -52,10 +53,11 @@ our use cases.
 
 Here are the approximate steps to get everything working. There might be
 variances between different operating systems so please tweak them to meet
-your needs. Use your the judgement of the brilliant programmer that you are :)
+your needs. Use the judgement of the brilliant programmer that you are :)
 Reach out to me if you have problems with any of these steps.
 
-* Create the MySQL database `CONFERENCE_REVIEW` and its constituent tables
+* Create the MySQL database `CONFERENCE_REVIEW` and its constituent tables -
+MySQL server must be running
 
 ```bash
 mysql -u root -p < CONFERENCE_REVIEW.sql
@@ -67,7 +69,7 @@ mysql -u root -p < CONFERENCE_REVIEW.sql
 python DataGenerator.py
 ```
 
-* Import test data to MySQL tables -- MongoDB server must be running
+* Import test data to MySQL tables
 
 ```bash
 mysql -u root -p < MySQLDataLoader.sql
