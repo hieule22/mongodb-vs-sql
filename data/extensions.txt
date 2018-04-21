@@ -1,0 +1,10 @@
+doc
+docx
+odt
+pdf
+rtf
+tex
+txt
+wks
+wps
+wpd
