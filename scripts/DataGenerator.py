@@ -1,12 +1,17 @@
+import os
 import random
 import sys
+
 from Util import *
 
-FIRST_NAMES = readFile('data/first-names.txt')
-LAST_NAMES = readFile('data/last-names.txt')
-UNIVERSITY_DOMAINS = readFile('data/university-domains.txt')
-TOPICS = readFile('data/topics.txt')
-EXTENSIONS = readFile('data/extensions.txt')
+DATADIR = '../data/'
+GENFILES_DIR = '../genfiles/'
+
+FIRST_NAMES = readFile(os.path.join(DATADIR, 'first-names.txt'))
+LAST_NAMES = readFile(os.path.join(DATADIR, 'last-names.txt'))
+UNIVERSITY_DOMAINS = readFile(os.path.join(DATADIR, 'university-domains.txt'))
+TOPICS = readFile(os.path.join(DATADIR, 'topics.txt'))
+EXTENSIONS = readFile(os.path.join(DATADIR, 'extensions.txt'))
 
 NROWS = int(sys.argv[1])
 
@@ -62,15 +67,18 @@ for ID in IDs:
     papers.append(Paper(ID, topic, fileName))
 
 # Generate paper authorship information
+
+AUTHORSHIP_RATIO = 2  # Minimum number of authors per paper and vice versa
+
 authorships = []
 for paper in papers:
-    for author in randChoice(authors, 2):
+    for author in randChoice(authors, min(AUTHORSHIP_RATIO, len(authors))):
         paper.authorIDs.append(author.emailID)
         author.paperIDs.append(paper.ID)
         authorships.append((author.emailID, paper.ID))
 
 for author in authors:
-    for paper in randChoice(papers, 2):
+    for paper in randChoice(papers, min(AUTHORSHIP_RATIO, len(papers))):
         if not paper.ID in author.paperIDs:
             # This author has not written this paper
             author.paperIDs.append(paper.ID)
@@ -78,9 +86,13 @@ for author in authors:
             authorships.append((author.emailID, paper.ID))
 
 # Output to file
-writeFile([author.csvStr() for author in authors], 'genfiles/authors.csv')
-writeFile([author.jsonStr() for author in authors], 'genfiles/authors.json')
-writeFile([paper.csvStr() for paper in papers], 'genfiles/papers.csv')
-writeFile([paper.jsonStr() for paper in papers], 'genfiles/papers.json')
+writeFile([author.csvStr() for author in authors],
+          os.path.join(GENFILES_DIR, 'authors.csv'))
+writeFile([author.jsonStr() for author in authors],
+          os.path.join(GENFILES_DIR, 'authors.json'))
+writeFile([paper.csvStr() for paper in papers],
+          os.path.join(GENFILES_DIR, 'papers.csv'))
+writeFile([paper.jsonStr() for paper in papers],
+          os.path.join(GENFILES_DIR, 'papers.json'))
 writeFile(['%s,%s' % authorship for authorship in authorships],
-          'genfiles/authorships.csv')
+          os.path.join(GENFILES_DIR, 'authorships.csv'))

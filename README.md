@@ -7,18 +7,17 @@ sizes in the presence - or lack thereof - of indexes.
 
 ## Content
 
-* [`CONFERENCE_REVIEW.sql`](CONFERENCE_REVIEW.sql) contains the MySQL queries to
+* [`sql/CONFERENCE_REVIEW.sql`](sql/CONFERENCE_REVIEW.sql) contains the MySQL queries to
 define our tables. Only tables relevant to this project are included in order to
 expedite the creation process. In addition, I have temporarily commented out all
 primary key / foreign key constraints so data could be rapidly inserted and the
 tables are free of any initial index (MySQL automatically defines indexes on
 key fields).
 
-* [`DataGenerator.py`](DataGenerator.py) is the Python script used to generate
-data for authors, papers, and authorships - the association between an author
-and the paper he or she writes. The generated data will be output to CSV and
-JSON files stored in [`genfiles`](genfiles/). Update the values of `NUM_AUTHORS`
-and `NUM_PAPERS` to change the number of rows generated.
+* [`scripts/DataGenerator.py`](scripts/DataGenerator.py) is the script used
+to generate data for authors, papers, and authorships - the association between
+an author and the paper he or she writes. The generated data will be output to
+CSV and JSON files stored in [`genfiles`](genfiles/).
 
 * [`genfiles`](genfiles/) stores the generated data files used to populate our
 databases. JSON files are used to populate MongoDB database while CSV files are
@@ -28,14 +27,17 @@ since they could get rapidly large when more rows are inserted.
 * [`data`](data/) contains input files taken from several sources to generate
 test data for this project.
 
-* [`MongoDBDataLoader.sh`](MongoDBDataLoader.sh) is the bash script to import
-generated data to actual MongoDB collections.
+* [`mongodb/MongoDBDataLoader.sh`](mongodb/MongoDBDataLoader.sh) is the bash
+script to import generated data to actual MongoDB collections.
 
-* [`MySQLDataLoader.sql`](MySQLDataLoader.sql) contains the SQL commands to
-import generated data to actual MySQL collections.
+* [`mongodb/MongoDBSearchQueries.js`](mongodb/MongoDBSearchQueries.js) stores
+the JavaScript code for the MongoDB search queries.
 
-* [`SearchQueries.sql`](SearchQueries.sql) contains the SQL search queries for
-our use cases.
+* [`sql/MySQLDataLoader.sql`](sql/MySQLDataLoader.sql) contains the SQL commands
+to import generated data to actual MySQL collections.
+
+* [`sql/SearchQueries.sql`](sql/SearchQueries.sql) contains the SQL search queries
+for our use cases.
 
 ## Instalation
 
@@ -60,23 +62,27 @@ Reach out to me if you have problems with any of these steps.
 MySQL server must be running
 
 ```bash
-mysql -u root -p < CONFERENCE_REVIEW.sql
+cd sql/
+mysql -u <username> -p < CONFERENCE_REVIEW.sql
 ```
 
 * Generate test data with a specified number of rows
 
 ```bash
+cd scripts/
 python DataGenerator.py <number of rows>
 ```
 
 * Import test data to MySQL tables
 
 ```bash
-mysql -u root -p < MySQLDataLoader.sql
+cd sql/
+mysql -u <username> -p < MySQLDataLoader.sql
 ```
 
 * Import test data to MongoDB collections -- MongoDB server must be running
 ```bash
+cd mongodb
 chmod +x MongoDBDataLoader.sh  # Do this once to make script executable
 ./MongoDBDataLoader.sql
 ```
