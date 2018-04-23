@@ -39,7 +39,7 @@ to import generated data to actual MySQL collections.
 * [`sql/SearchQueries.sql`](sql/SearchQueries.sql) contains the SQL search queries
 for our use cases.
 
-## Instalation
+## Installation
 
 ### Requirements
 

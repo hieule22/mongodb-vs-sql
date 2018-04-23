@@ -4,14 +4,17 @@ import sys
 
 from Util import *
 
-DATADIR = '../data/'
-GENFILES_DIR = '../genfiles/'
+# The repository directory is the parent directory of the directory containing
+# this script.
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(REPO_DIR, 'data')
+GENFILES_DIR = os.path.join(REPO_DIR, 'genfiles')
 
-FIRST_NAMES = readFile(os.path.join(DATADIR, 'first-names.txt'))
-LAST_NAMES = readFile(os.path.join(DATADIR, 'last-names.txt'))
-UNIVERSITY_DOMAINS = readFile(os.path.join(DATADIR, 'university-domains.txt'))
-TOPICS = readFile(os.path.join(DATADIR, 'topics.txt'))
-EXTENSIONS = readFile(os.path.join(DATADIR, 'extensions.txt'))
+FIRST_NAMES = readFile(os.path.join(DATA_DIR, 'first-names.txt'))
+LAST_NAMES = readFile(os.path.join(DATA_DIR, 'last-names.txt'))
+UNIVERSITY_DOMAINS = readFile(os.path.join(DATA_DIR, 'university-domains.txt'))
+TOPICS = readFile(os.path.join(DATA_DIR, 'topics.txt'))
+EXTENSIONS = readFile(os.path.join(DATA_DIR, 'extensions.txt'))
 
 NROWS = int(sys.argv[1])
 
