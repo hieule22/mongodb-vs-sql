@@ -15,7 +15,7 @@ LOAD DATA LOCAL INFILE '../genfiles/papers.csv'
 INTO TABLE PAPER
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
-(ID, FileName, Topic);
+(ID, FileName, Topic, ContactAuthorEmailID);
 
 DELETE FROM AUTHORSHIP WHERE TRUE;
 

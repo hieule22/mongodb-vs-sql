@@ -4,6 +4,10 @@ import sys
 
 from Util import *
 
+if len(sys.argv) != 2 or not sys.argv[1].isdigit():
+    sys.stderr.write('Usage: python %s <number of rows>\n' % sys.argv[0])
+    sys.exit()
+
 # The repository directory is the parent directory of the directory containing
 # this script.
 REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,13 +25,13 @@ NROWS = int(sys.argv[1])
 # Generate author information
 class Author:
     def __init__(self, emailID, firstName, lastName):
-        self.emailID = emailID
+        self._id = emailID
         self.firstName = firstName
         self.lastName = lastName
         self.paperIDs = []
 
     def csvStr(self):
-        return '%s,%s,%s' % (self.emailID, self.firstName, self.lastName)
+        return '%s,%s,%s' % (self._id, self.firstName, self.lastName)
 
     def jsonStr(self):
         return json.dumps(self.__dict__)
@@ -47,14 +51,16 @@ random.shuffle(authors)  # Shuffle to avoid ascending index values
     
 # Generate paper information
 class Paper:
-    def __init__(self, ID, topic, fileName):
-        self.ID = ID
+    def __init__(self, ID, topic, fileName, contactAuthorEmailID):
+        self._id = ID
         self.topic = topic
         self.fileName = fileName
-        self.authorIDs = []
+        self.authorEmailIDs = []
+        self.contactAuthorEmailID = contactAuthorEmailID
 
     def csvStr(self):
-        return '%s,%s,%s' % (self.ID, self.fileName, self.topic)
+        return '%s,%s,%s,%s' % (self._id, self.fileName, self.topic,
+                                self.contactAuthorEmailID)
 
     def jsonStr(self):
         return json.dumps(self.__dict__)
@@ -67,26 +73,29 @@ for ID in IDs:
     topic = random.choice(TOPICS)
     fileName = '%s%s.%s' % (removeWhitespaces(topic), ID,
                             random.choice(EXTENSIONS))
-    papers.append(Paper(ID, topic, fileName))
+    papers.append(Paper(ID, topic, fileName, None))
 
 # Generate paper authorship information
 
-AUTHORSHIP_RATIO = 2  # Minimum number of authors per paper and vice versa
-
 authorships = []
 for paper in papers:
-    for author in randChoice(authors, min(AUTHORSHIP_RATIO, len(authors))):
-        paper.authorIDs.append(author.emailID)
-        author.paperIDs.append(paper.ID)
-        authorships.append((author.emailID, paper.ID))
+    # Each paper requires 1 contact author
+    contactAuthor = random.choice(authors)
+    paper.contactAuthorEmailID = contactAuthor._id
+    paper.authorEmailIDs.append(contactAuthor._id)
+    contactAuthor.paperIDs.append(paper._id)
+    authorships.append((contactAuthor._id, paper._id))
+
+AUTHORSHIP_THRESHOLD = min(len(papers), 2)  # Minimum number of papers per author
 
 for author in authors:
-    for paper in randChoice(papers, min(AUTHORSHIP_RATIO, len(papers))):
-        if not paper.ID in author.paperIDs:
+    while len(author.paperIDs) < AUTHORSHIP_THRESHOLD:
+        paper = random.choice(papers)
+        if not paper._id in author.paperIDs:
             # This author has not written this paper
-            author.paperIDs.append(paper.ID)
-            paper.authorIDs.append(author.emailID)
-            authorships.append((author.emailID, paper.ID))
+            author.paperIDs.append(paper._id)
+            paper.authorEmailIDs.append(author._id)
+            authorships.append((author._id, paper._id))
 
 # Output to file
 writeFile([author.csvStr() for author in authors],
