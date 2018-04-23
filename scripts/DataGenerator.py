@@ -55,7 +55,6 @@ class Paper:
         self._id = ID
         self.topic = topic
         self.fileName = fileName
-        self.authorEmailIDs = []
         self.contactAuthorEmailID = contactAuthorEmailID
 
     def csvStr(self):
@@ -82,7 +81,6 @@ for paper in papers:
     # Each paper requires 1 contact author
     contactAuthor = random.choice(authors)
     paper.contactAuthorEmailID = contactAuthor._id
-    paper.authorEmailIDs.append(contactAuthor._id)
     contactAuthor.paperIDs.append(paper._id)
     authorships.append((contactAuthor._id, paper._id))
 
@@ -94,7 +92,6 @@ for author in authors:
         if not paper._id in author.paperIDs:
             # This author has not written this paper
             author.paperIDs.append(paper._id)
-            paper.authorEmailIDs.append(author._id)
             authorships.append((author._id, paper._id))
 
 # Output to file
