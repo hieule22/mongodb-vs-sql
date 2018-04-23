@@ -1,4 +1,5 @@
 import random
+import sys
 from Util import *
 
 FIRST_NAMES = readFile('data/first-names.txt')
@@ -7,8 +8,7 @@ UNIVERSITY_DOMAINS = readFile('data/university-domains.txt')
 TOPICS = readFile('data/topics.txt')
 EXTENSIONS = readFile('data/extensions.txt')
 
-NUM_AUTHORS = 100
-NUM_PAPERS = 100
+NROWS = int(sys.argv[1])
 
 # Generate author information
 class Author:
@@ -26,7 +26,7 @@ class Author:
 
 authors = []
 
-for i in range(NUM_AUTHORS):
+for i in range(NROWS):
     firstName = random.choice(FIRST_NAMES)
     lastName = random.choice(LAST_NAMES)
     emailID = '%s%s%d@%s' % (firstName.lower(), lastName.lower(), i,
@@ -48,7 +48,7 @@ class Paper:
         return json.dumps(self.__dict__)
 
 
-IDs = list(range(1, NUM_PAPERS + 1))
+IDs = list(range(1, NROWS + 1))
 random.shuffle(IDs)
 papers = []
 for ID in IDs:

@@ -63,10 +63,10 @@ MySQL server must be running
 mysql -u root -p < CONFERENCE_REVIEW.sql
 ```
 
-* Generate test data
+* Generate test data with a specified number of rows
 
 ```bash
-python DataGenerator.py
+python DataGenerator.py <number of rows>
 ```
 
 * Import test data to MySQL tables
