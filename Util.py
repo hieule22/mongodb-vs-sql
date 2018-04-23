@@ -34,3 +34,6 @@ def randChoice(seq, n):
     while len(choices) < n:
         choices.add(random.randint(0, len(seq) - 1))
     return [seq[i] for i in choices]
+
+def removeWhitespaces(s):
+    return s.replace(' ', '')

@@ -29,9 +29,13 @@ authors = []
 for i in range(NROWS):
     firstName = random.choice(FIRST_NAMES)
     lastName = random.choice(LAST_NAMES)
+    # Email has the form <first name><last name><index>@<university domain>
+    # where index is used to uniquely identify the email.
     emailID = '%s%s%d@%s' % (firstName.lower(), lastName.lower(), i,
                            random.choice(UNIVERSITY_DOMAINS).lower())
     authors.append(Author(emailID, firstName, lastName))
+
+random.shuffle(authors)  # Shuffle to avoid ascending index values
     
 # Generate paper information
 class Paper:
@@ -53,7 +57,8 @@ random.shuffle(IDs)
 papers = []
 for ID in IDs:
     topic = random.choice(TOPICS)
-    fileName = '%s%s.%s' % (topic.replace(' ', ''), ID, random.choice(EXTENSIONS))
+    fileName = '%s%s.%s' % (removeWhitespaces(topic), ID,
+                            random.choice(EXTENSIONS))
     papers.append(Paper(ID, topic, fileName))
 
 # Generate paper authorship information
@@ -66,7 +71,8 @@ for paper in papers:
 
 for author in authors:
     for paper in randChoice(papers, 2):
-        if not paper.ID in author.paperIDs:  # This author has not written this paper
+        if not paper.ID in author.paperIDs:
+            # This author has not written this paper
             author.paperIDs.append(paper.ID)
             paper.authorIDs.append(author.emailID)
             authorships.append((author.emailID, paper.ID))
@@ -76,4 +82,5 @@ writeFile([author.csvStr() for author in authors], 'genfiles/authors.csv')
 writeFile([author.jsonStr() for author in authors], 'genfiles/authors.json')
 writeFile([paper.csvStr() for paper in papers], 'genfiles/papers.csv')
 writeFile([paper.jsonStr() for paper in papers], 'genfiles/papers.json')
-writeFile(['%s,%s' % authorship for authorship in authorships], 'genfiles/authorships.csv')
+writeFile(['%s,%s' % authorship for authorship in authorships],
+          'genfiles/authorships.csv')
