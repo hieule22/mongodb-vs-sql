@@ -20,7 +20,7 @@ db.author.aggregate([
 	{
 		$match:
 		{
-		    "firstName": { $regex: /^S/ },
+		        "firstName": { $regex: /^S/ },
 			"papers.topic": "Machine learning"
 		}
 	},
@@ -28,6 +28,41 @@ db.author.aggregate([
 		$group:
 		{
 			_id: "$papers.ID",
+			fileName: { $first: "$papers.fileName" },
+			topic: { $first: "$papers.topic" }
+		}
+	}
+]);
+
+// Same query but when index is created on paper ID
+
+db.author.aggregate([
+	{
+		$unwind: "$paperIDs"
+	},
+	{
+		$lookup:
+		{
+			from: "paper",
+			localField: "paperIDs",
+			foreignField: "_id",
+			as: "papers"
+		}
+	},
+	{
+		$unwind: "$papers"
+	},
+	{
+		$match:
+		{
+		        "firstName": { $regex: /^S/ },
+			"papers.topic": "Machine learning"
+		}
+	},
+	{
+		$group:
+		{
+			_id: "$papers._id",
 			fileName: { $first: "$papers.fileName" },
 			topic: { $first: "$papers.topic" }
 		}
