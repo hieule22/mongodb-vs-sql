@@ -10,7 +10,7 @@ db.author.aggregate([
 		{
 			from: "paper",
 			localField: "paperIDs",
-			foreignField: "_id",
+			foreignField: "ID",
 			as: "papers"
 		}
 	},
@@ -25,13 +25,15 @@ db.author.aggregate([
 		}
 	},
 	{
-		$project:
+		$group:
 		{
-			"papers._id": 1,
-			"papers.fileName": 1,
-			"papers.topic": 1
+			_id: "$papers.ID",
+			fileName: { $first: "$papers.fileName" },
+			topic: { $first: "$papers.topic" }
 		}
-	}]);
+	}
+]);
+
 
 // List all papers with a filename starting with 'C' and a contact author
 // whose first name starts with 'A' and last name starts with 'H'.

@@ -25,13 +25,13 @@ NROWS = int(sys.argv[1])
 # Generate author information
 class Author:
     def __init__(self, emailID, firstName, lastName):
-        self._id = emailID
+        self.emailID = emailID
         self.firstName = firstName
         self.lastName = lastName
         self.paperIDs = []
 
     def csvStr(self):
-        return '%s,%s,%s' % (self._id, self.firstName, self.lastName)
+        return '%s,%s,%s' % (self.emailID, self.firstName, self.lastName)
 
     def jsonStr(self):
         return json.dumps(self.__dict__)
@@ -52,13 +52,13 @@ random.shuffle(authors)  # Shuffle to avoid ascending index values
 # Generate paper information
 class Paper:
     def __init__(self, ID, topic, fileName, contactAuthorEmailID):
-        self._id = ID
+        self.ID = ID
         self.topic = topic
         self.fileName = fileName
         self.contactAuthorEmailID = contactAuthorEmailID
 
     def csvStr(self):
-        return '%s,%s,%s,%s' % (self._id, self.fileName, self.topic,
+        return '%s,%s,%s,%s' % (self.ID, self.fileName, self.topic,
                                 self.contactAuthorEmailID)
 
     def jsonStr(self):
@@ -80,19 +80,19 @@ authorships = []
 for paper in papers:
     # Each paper requires 1 contact author
     contactAuthor = random.choice(authors)
-    paper.contactAuthorEmailID = contactAuthor._id
-    contactAuthor.paperIDs.append(paper._id)
-    authorships.append((contactAuthor._id, paper._id))
+    paper.contactAuthorEmailID = contactAuthor.emailID
+    contactAuthor.paperIDs.append(paper.ID)
+    authorships.append((contactAuthor.emailID, paper.ID))
 
 AUTHORSHIP_THRESHOLD = min(len(papers), 2)  # Minimum number of papers per author
 
 for author in authors:
     while len(author.paperIDs) < AUTHORSHIP_THRESHOLD:
         paper = random.choice(papers)
-        if not paper._id in author.paperIDs:
+        if not paper.ID in author.paperIDs:
             # This author has not written this paper
-            author.paperIDs.append(paper._id)
-            authorships.append((author._id, paper._id))
+            author.paperIDs.append(paper.ID)
+            authorships.append((author.emailID, paper.ID))
 
 # Output to file
 writeFile([author.csvStr() for author in authors],
