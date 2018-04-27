@@ -5,4 +5,4 @@ db.collection.stats();
 db.setProfilingLevel(2);
 
 // Get profiling data for most recent command
-b.system.profile.find().limit(1).sort( { ts : -1 } ).pretty();
+db.system.profile.find().limit(1).sort( { ts : -1 } ).pretty();
