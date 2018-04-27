@@ -22,6 +22,8 @@ EXTENSIONS = readFile(os.path.join(DATA_DIR, 'extensions.txt'))
 
 NROWS = int(sys.argv[1])
 
+random.seed(430)
+
 # Generate author information
 class Author:
     def __init__(self, emailID, firstName, lastName):
