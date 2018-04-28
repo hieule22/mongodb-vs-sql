@@ -1,7 +1,7 @@
 # List of helpful procedures for the project.
 
 import json
-from numpy import random
+import random
 
 def readFile(path):
     lines = []

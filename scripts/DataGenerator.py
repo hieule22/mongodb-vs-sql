@@ -1,5 +1,5 @@
 import os
-from numpy import random
+import random
 import sys
 
 from Util import *
