@@ -2,12 +2,13 @@
 -- author whose first name starts with an S.
 
 SELECT DISTINCT PAPER.ID, PAPER.FileName, PAPER.Topic
-  FROM PAPER
+  FROM AUTHOR
        INNER JOIN AUTHORSHIP
-       ON PAPER.ID = AUTHORSHIP.PaperID
+       ON AUTHOR.EmailID = AUTHORSHIP.AuthorEmailID
 
-       INNER JOIN AUTHOR
-       ON AUTHORSHIP.AuthorEmailID = AUTHOR.EmailID
+       INNER JOIN PAPER
+       ON AUTHORSHIP.PaperID = PAPER.ID
+       
 WHERE PAPER.TOPIC = 'Machine Learning' AND AUTHOR.FirstName LIKE 'S%';
 
 -- List all papers with a filename starting with 'C' and a contact author
