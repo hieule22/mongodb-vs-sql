@@ -104,3 +104,35 @@ db.paper.aggregate([
 			"contactAuthor.lastName": 1
 		}
 	}]);
+
+//Test 2
+db.paper.aggregate([
+	{
+		$lookup:
+		{
+			from: "author",
+			localField: "contactAuthorEmailID",
+			foreignField: "_id",
+			as: "contactAuthor"
+		}
+	},
+	{
+		$unwind: "$contactAuthor"
+	},
+	{
+		$match:
+		{
+			"fileName": { $regex: /^N/ },		
+			"contactAuthor.lastName": { $regex: /^B/ }
+		}
+	},
+	{
+		$project:
+		{
+			"_id": 1,
+			"fileName": 1,
+			"contactAuthor._id": 1,
+			"contactAuthor.firstName": 1,
+			"contactAuthor.lastName": 1
+		}
+	}]);
