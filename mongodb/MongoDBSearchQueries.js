@@ -105,7 +105,7 @@ db.paper.aggregate([
 		}
 	}]);
 
-//Test 2
+//TEST SEARCH
 db.paper.aggregate([
 	{
 		$lookup:
@@ -123,7 +123,6 @@ db.paper.aggregate([
 		$match:
 		{
 			"fileName": { $regex: /^N/ },		
-			"contactAuthor.lastName": { $regex: /^B/ }
 		}
 	},
 	{
