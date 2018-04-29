@@ -1,29 +1,35 @@
+DROP DATABASE CONFERENCE_REVIEW;
 CREATE DATABASE CONFERENCE_REVIEW;
+
+USE CONFERENCE_REVIEW;
 
 CREATE TABLE AUTHOR (
 	EmailID   VARCHAR(320) NOT NULL,
+        -- PRIMARY KEY (EmailID),
 	FirstName VARCHAR(15),
-	LastName  VARCHAR(15),
-	-- PRIMARY KEY (EmailID)
+	LastName  VARCHAR(15)
 );
 
 CREATE TABLE PAPER (
 	ID                   INT NOT NULL,
+	-- PRIMARY KEY (ID),
 	Title                VARCHAR(255),
 	FileName             VARCHAR(255),
 	Abstract             VARCHAR(255),
-	Topic                VARCHAR(255) NOT NULL,
-	ContactAuthorEmailID VARCHAR(320),
-	ConferenceName       VARCHAR(255),
-	-- PRIMARY KEY (ID),
+	Topic                VARCHAR(255),
 	-- FOREIGN KEY (ContactAuthorEmailID) REFERENCES AUTHOR(EmailID),
-	-- FOREIGN KEY (ConferenceName) REFERENCES CONFERENCE(Name)
+	ContactAuthorEmailID VARCHAR(320),
+	ConferenceName       VARCHAR(255)
 );
 
 CREATE TABLE AUTHORSHIP (
 	AuthorEmailID VARCHAR(320) NOT NULL,
-	PaperID       INT NOT NULL,
+	PaperID       INT NOT NULL
 	-- PRIMARY KEY (AuthorEmailID, PaperID),
 	-- FOREIGN KEY (AuthorEmailID) REFERENCES AUTHOR(EmailID),
 	-- FOREIGN KEY (PaperID) REFERENCES PAPER(ID)
 );
+
+-- ALTER TABLE PAPER ADD INDEX (FileName);
+-- ALTER TABLE AUTHOR ADD INDEX (FirstName);
+-- ALTER TABLE PAPER ADD INDEX (Topic);

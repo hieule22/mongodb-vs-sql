@@ -22,3 +22,12 @@ SELECT PAPER.ID, PAPER.FileName,
 WHERE PAPER.FileName LIKE 'C%' AND AUTHOR.FirstName LIKE 'A%' AND
       AUTHOR.LastName LIKE 'H%';
       
+-- List all papers with a filename starting with 'N' and a contact author
+-- whose first name starts with 'A'.
+
+SELECT PAPER.ID, PAPER.FileName,
+       AUTHOR.EmailID, AUTHOR.FirstName
+  FROM PAPER
+       INNER JOIN AUTHOR
+       ON PAPER.ContactAuthorEmailID = AUTHOR.EmailID
+ WHERE PAPER.FileName LIKE 'N%' AND AUTHOR.FirstName LIKE 'A%';
