@@ -104,3 +104,36 @@ db.paper.aggregate([
 			"contactAuthor.lastName": 1
 		}
 	}]);
+
+
+// List all papers with a filename starting with 'N' and a contact author
+// whose first name starts with 'A'.
+db.paper.aggregate([
+	{
+		$lookup:
+		{
+			from: "author",
+			localField: "contactAuthorEmailID",
+			foreignField: "emailID",
+			as: "contactAuthor"
+		}
+	},
+	{
+		$unwind: "$contactAuthor"
+	},
+	{
+		$match:
+		{
+			"fileName": { $regex: /^N/ },
+			"contactAuthor.firstName": { $regex: /^A/ },
+		}
+	},
+	{
+		$project:
+		{
+			"_id": 1,
+			"fileName": 1,
+			"contactAuthor._id": 1,
+			"contactAuthor.firstName": 1,
+		}
+	}]);
